@@ -132,10 +132,46 @@ window.addEventListener("load", function () {
       this.color = "white";
     }
     draw(context) {
+      context.save();
+      context.fillStyle = this.color;
+      context.shadowOffsetX = 2;
+      context.shadowOffsetY = 2;
+      context.shadowColor = "black";
+      context.font = this.fontSize + "px" + this.fontFamily;
+      // score
+      context.fillText("Score: " + this.game.score, 20, 40);
+      // ammo
+      context.fillText;
       context.fillStyle = this.color;
       for (let i = 0; i < this.game.ammo; i++) {
         context.fillRect(20 + 5 * i, 50, 3, 20);
       }
+      // game over messages
+      if (this.game.gameOver) {
+        context.textAlign = "center";
+        let message1;
+        let message2;
+        if (this.game.score > this.game.winningScore) {
+          message1 = "You Win!";
+          message2 = "Well done!";
+        } else {
+          message1 = "You Lose!";
+          message2 = "Try again next time!";
+        }
+        context.font = "50px" + this.fontFamily;
+        context.fillText(
+          message1,
+          this.game.width * 0.5,
+          this.game.height * 0.5 - 40
+        );
+        context.font = "25px" + this.fontFamily;
+        context.fillText(
+          message2,
+          this.game.width * 0.5,
+          this.game.height * 0.5 + 40
+        );
+      }
+      context.restore();
     }
   }
 
@@ -155,6 +191,8 @@ window.addEventListener("load", function () {
       this.ammoTimer = 0;
       this.ammoInterval = 500;
       this.gameOver = false;
+      this.score = 0;
+      this.winningScore = 10;
     }
     update(deltaTime) {
       this.player.update();
@@ -176,6 +214,7 @@ window.addEventListener("load", function () {
             if (enemy.lives <= 0) {
               enemy.markedForDeletion = true;
               this.score += enemy.score;
+              if (this.score > this.winningScore) this.gameOver = true;
             }
           }
         });
