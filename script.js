@@ -57,10 +57,10 @@ window.addEventListener("load", function () {
       this.x = 20;
       this.y = 100;
       this.frameX = 0;
-      this.frameY = 0;
+      this.frameY = 1;
       this.maxFrame = 37;
-      this.speedY = 3;
-      this.maxSpeed = 5;
+      this.speedY = 0;
+      this.maxSpeed = 3;
       this.projectiles = [];
       this.image = document.getElementById("player");
     }
@@ -86,8 +86,7 @@ window.addEventListener("load", function () {
       }
     }
     draw(context) {
-      if (this.game.debug)
-        context.strokeRect(this.x, this.y, this.width, this.height);
+      if (this.game.debug) context.strokeRect(this.x, this.y, this.width, this.height);
       context.drawImage(
         this.image,
         this.frameX * this.width,
